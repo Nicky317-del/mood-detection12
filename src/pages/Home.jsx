@@ -1,50 +1,77 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import SongList from "../components/SongList";
 
 const Home = () => {
   const [songs, setSongs] = useState([]);
   const [input, setInput] = useState("");
 
-  const fetchSongs = async () => {
-    if (!input.trim()) return;
+  const fetchSongs = async (term) => {
+    try {
+      let query = term.toLowerCase();
 
-    let query = input.toLowerCase();
+      if (query.includes("happy")) query = "bollywood happy songs";
+      else if (query.includes("sad")) query = "arijit singh sad songs";
+      else if (query.includes("love")) query = "bollywood romantic songs";
 
-    // 🎯 Smart Hindi/Bollywood mapping
-    if (query.includes("happy")) {
-      query = "bollywood happy songs";
-    } else if (query.includes("sad")) {
-      query = "arijit singh sad songs";
-    } else if (query.includes("love") || query.includes("romantic")) {
-      query = "bollywood romantic songs";
-    } else if (query.includes("party")) {
-      query = "bollywood party songs";
+      const res = await fetch(
+        `https://itunes.apple.com/search?term=${query}&limit=20&media=music`
+      );
+
+      const data = await res.json();
+      const results = Array.isArray(data.results)
+        ? data.results
+        : [];
+
+      setSongs(results);
+
+      localStorage.setItem("lastSongs", JSON.stringify(results));
+      localStorage.setItem("lastSearch", term);
+    } catch {
+      console.log("Error fetching songs");
     }
-
-    const res = await fetch(
-      `https://itunes.apple.com/search?term=${query}&limit=25&country=IN&media=music`
-    );
-
-    const data = await res.json();
-    setSongs(data.results || []);
   };
 
+  // ⚡ Debounce search
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      if (input.trim()) fetchSongs(input);
+    }, 500);
+
+    return () => clearTimeout(timer);
+  }, [input]);
+
+  // Load saved
+  useEffect(() => {
+    try {
+      const savedSongs = localStorage.getItem("lastSongs");
+      const savedInput = localStorage.getItem("lastSearch");
+
+      if (savedSongs) {
+        setSongs(JSON.parse(savedSongs));
+      } else {
+        fetchSongs("top songs");
+      }
+
+      if (savedInput) setInput(savedInput);
+    } catch {
+      fetchSongs("top songs");
+    }
+  }, []);
+
   return (
-    <div>
-      <h1>🎧 Mini Spotify </h1>
+    <div style={{ maxWidth: "1200px", margin: "auto", padding: "20px" }}>
+      <h1>🎧 Mini Spotify</h1>
 
       <input
-        placeholder="Enter mood (happy, sad, romantic...)"
         value={input}
         onChange={(e) => setInput(e.target.value)}
+        placeholder="Enter mood..."
         style={{
           padding: "10px",
-          width: "60%",
-          marginRight: "10px"
+          marginRight: "10px",
+          borderRadius: "6px"
         }}
       />
-
-      <button onClick={fetchSongs}>Search</button>
 
       <SongList songs={songs} />
     </div>

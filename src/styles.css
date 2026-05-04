@@ -144,3 +144,385 @@ button:hover {
     width: 40px;
   }
 }
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #121212;
+  color: white;
+}
+
+/* SONG GRID */
+.song-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 20px;
+  padding: 20px;
+}
+
+/* CARD */
+.song-card {
+  background: #181818;
+  border-radius: 15px;
+  padding: 15px;
+  transition: 0.3s;
+  cursor: pointer;
+}
+
+.song-card:hover {
+  background: #282828;
+  transform: scale(1.05);
+}
+
+/* IMAGE */
+.song-card img {
+  width: 100%;
+  border-radius: 10px;
+}
+
+/* INFO */
+.song-info h4 {
+  margin: 10px 0 5px;
+  font-size: 14px;
+}
+
+.song-info p {
+  font-size: 12px;
+  color: #b3b3b3;
+}
+
+/* ACTIONS */
+.song-actions {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10px;
+}
+
+/* PLAYER */
+.player {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  background: #181818;
+  padding: 10px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.player-left {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.player-left img {
+  width: 50px;
+  border-radius: 5px;
+}
+
+.player-controls button {
+  margin: 0 5px;
+}
+
+/* MOBILE */
+@media (max-width: 768px) {
+  .song-container {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+/* GLOBAL */
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #121212;
+  color: white;
+}
+
+/* GRID */
+.song-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 20px;
+  padding: 20px;
+}
+
+/* CARD */
+.song-card {
+  background: #181818;
+  border-radius: 12px;
+  padding: 15px;
+  transition: 0.3s;
+}
+
+.song-card:hover {
+  background: #282828;
+  transform: translateY(-5px);
+}
+
+/* IMAGE */
+.song-card img {
+  width: 100%;
+  border-radius: 10px;
+}
+
+/* TEXT */
+.song-card h4 {
+  margin: 10px 0 5px;
+  font-size: 14px;
+}
+
+.song-card p {
+  font-size: 12px;
+  color: #b3b3b3;
+}
+
+/* ACTIONS */
+.actions {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10px;
+}
+
+button {
+  background: #1db954;
+  border: none;
+  padding: 6px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+button:hover {
+  background: #1ed760;
+}
+
+/* PLAYER */
+.player {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  background: #181818;
+  padding: 10px 20px;
+  display: flex;
+  justify-content: space-between;
+}
+
+/* MOBILE */
+@media (max-width: 768px) {
+  .song-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+/* LIGHT MODE */
+body.light {
+  background: #ffffff;
+  color: #000;
+}
+
+/* DARK MODE */
+body.dark {
+  background: #121212;
+  color: #fff;
+}
+
+/* CARD */
+.song-card {
+  background: #181818;
+}
+
+body.light .song-card {
+  background: #f0f0f0;
+  color: #000;
+}
+/* THEME */
+body.dark {
+  background: #121212;
+  color: white;
+}
+
+body.light {
+  background: #ffffff;
+  color: black;
+}
+
+/* GRID */
+.song-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 20px;
+  padding: 20px;
+}
+
+/* CARD */
+.song-card {
+  background: #181818;
+  border-radius: 12px;
+  padding: 15px;
+}
+
+body.light .song-card {
+  background: #f0f0f0;
+  color: black;
+}
+
+/* IMAGE */
+.song-card img {
+  width: 100%;
+  border-radius: 10px;
+}
+
+/* ACTIONS */
+.actions {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10px;
+}
+
+button {
+  background: #1db954;
+  border: none;
+  padding: 6px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+/* PLAYER FIX */
+.player {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  background: #181818;
+  padding: 10px;
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+/* THEME */
+body.dark {
+  background: #121212;
+  color: white;
+}
+
+body.light {
+  background: #ffffff;
+  color: black;
+}
+
+/* GRID */
+.song-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 20px;
+  padding: 20px;
+}
+
+/* CARD */
+.song-card {
+  background: #181818;
+  border-radius: 12px;
+  padding: 15px;
+  transition: 0.3s;
+}
+
+.song-card:hover {
+  transform: scale(1.03);
+}
+
+/* IMAGE */
+.song-card img {
+  width: 100%;
+  border-radius: 10px;
+}
+
+/* ACTIONS */
+.actions {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10px;
+}
+
+button {
+  background: #1db954;
+  border: none;
+  padding: 6px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+/* 🎧 PLAYER (FIXED PERFECTLY) */
+.player {
+  position: fixed;
+  bottom: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+
+  width: 90%;
+  max-width: 700px;
+
+  background: #181818;
+  padding: 12px 20px;
+  border-radius: 12px;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  box-shadow: 0 0 10px rgba(0,0,0,0.5);
+}
+
+/* TEXT */
+.player-info {
+  font-size: 14px;
+  flex: 1;
+}
+
+/* BUTTON GROUP */
+.player-controls {
+  display: flex;
+  gap: 10px;
+}
+/* 🎧 PLAYER MAIN */
+.player {
+  position: fixed;
+  bottom: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+
+  width: 90%;
+  max-width: 800px;
+
+  background: #181818;
+  padding: 12px 20px;
+  border-radius: 12px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  box-shadow: 0 0 10px rgba(0,0,0,0.5);
+}
+
+/* LEFT */
+.player-left {
+  flex: 1;
+  font-size: 14px;
+}
+
+/* CENTER (MAIN CONTROLS) */
+.player-center {
+  display: flex;
+  gap: 15px;
+  justify-content: center;
+  align-items: center;
+}
+
+/* RIGHT (EMPTY SPACE FOR BALANCE) */
+.player-right {
+  flex: 1;
+}
+
+/* BUTTON STYLE */
+.player-center button {
+  font-size: 16px;
+  padding: 8px 12px;
+  border-radius: 50%;
+}

@@ -1,99 +1,129 @@
 import React, { useState, useRef } from "react";
 import { motion } from "framer-motion";
 
-const SongList = ({ songs }) => {
-  const [currentSong, setCurrentSong] = useState(null);
-
+const SongList = ({ songs = [] }) => {
   const audioRef = useRef(new Audio());
 
-  // ❤️ Save favorites
-  const addFav = (song) => {
-    const old = JSON.parse(localStorage.getItem("fav")) || [];
-    localStorage.setItem("fav", JSON.stringify([...old, song]));
-  };
+  const [currentSong, setCurrentSong] = useState(null);
+  const [isPlaying, setIsPlaying] = useState(false);
 
-  // ▶️ Play song
-  const handlePlay = (song) => {
-    if (audioRef.current.src !== song.previewUrl) {
-      audioRef.current.src = song.previewUrl;
+  const [favorites, setFavorites] = useState(() => {
+    try {
+      return JSON.parse(localStorage.getItem("favorites") || "[]");
+    } catch {
+      return [];
     }
+  });
 
-    audioRef.current.play();
-    setCurrentSong(song);
-  };
+  const playSong = (song) => {
+    if (!song?.previewUrl) return;
 
-  // ⏸ Pause
-  const handlePause = () => {
     audioRef.current.pause();
+    audioRef.current = new Audio(song.previewUrl);
+    audioRef.current.play();
+
+    setCurrentSong(song);
+    setIsPlaying(true);
   };
 
-  // ⏹ Stop
-  const handleStop = () => {
+  const pauseSong = () => {
+    audioRef.current.pause();
+    setIsPlaying(false);
+  };
+
+  const stopSong = () => {
     audioRef.current.pause();
     audioRef.current.currentTime = 0;
     setCurrentSong(null);
+    setIsPlaying(false);
   };
 
-  if (!songs.length) {
-    return (
-      <div style={{ padding: "20px" }}>
-        <p>🎧 Search a mood to start listening</p>
-      </div>
-    );
-  }
+  const toggleFavorite = (song) => {
+    let favs = JSON.parse(localStorage.getItem("favorites") || "[]");
+
+    const exists = favs.find((item) => item.trackId === song.trackId);
+
+    if (exists) {
+      favs = favs.filter((item) => item.trackId !== song.trackId);
+    } else {
+      favs.push(song);
+    }
+
+    localStorage.setItem("favorites", JSON.stringify(favs));
+    setFavorites(favs);
+  };
 
   return (
-    <div style={{ paddingBottom: "140px" }}>
-      
-      {/* SONG GRID */}
-      <div className="grid">
-        {songs.map((song, i) => (
-          <motion.div
-            key={i}
-            className="card"
-            initial={{ opacity: 0, y: 15 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: i * 0.05 }}
-            whileHover={{ scale: 1.05 }}
-          >
-            <img src={song.artworkUrl100} alt="" />
-            <h4>{song.trackName}</h4>
-            <p>{song.artistName}</p>
+    <div style={{ paddingBottom: "130px" }}>
+      {/* 🎵 SONG GRID */}
+      <div className="song-grid">
+        {songs.map((song) => {
+          const isFav = favorites.some(
+            (item) => item.trackId === song.trackId
+          );
 
-            <button onClick={() => handlePlay(song)}>▶ Play</button>
-            <button onClick={() => addFav(song)}>❤️</button>
-          </motion.div>
-        ))}
+          return (
+            <motion.div
+              className="song-card"
+              key={song.trackId}
+              whileHover={{ scale: 1.05 }}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.3 }}
+            >
+              <img
+                loading="lazy"
+                src={
+                  song.artworkUrl100 ||
+                  "https://via.placeholder.com/300"
+                }
+                alt=""
+              />
+
+              <h4>{song.trackName}</h4>
+              <p>{song.artistName}</p>
+
+              <div className="actions">
+                <button onClick={() => playSong(song)}>▶</button>
+
+                <button onClick={() => toggleFavorite(song)}>
+                  {isFav ? "❤️" : "🤍"}
+                </button>
+              </div>
+            </motion.div>
+          );
+        })}
       </div>
 
-      {/* 🎧 FIXED PLAYER */}
+      {/* 🎧 PLAYER (CENTER CONTROLS) */}
       {currentSong && (
-        <motion.div
-          className="player"
-          initial={{ y: 100, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-        >
+        <div className="player">
           
-          {/* SONG INFO */}
-          <div className="player-info">
-            <img src={currentSong.artworkUrl100} alt="" />
-            <div>
-              <p style={{ margin: 0 }}>{currentSong.trackName}</p>
-              <small>{currentSong.artistName}</small>
+          {/* LEFT - SONG INFO */}
+          <div className="player-left">
+            🎵 {currentSong.trackName}
+            <div style={{ fontSize: "12px", color: "#aaa" }}>
+              {currentSong.artistName}
             </div>
           </div>
 
-          {/* CONTROLS */}
-          <div style={{ display: "flex", gap: "10px" }}>
-            <button onClick={() => handlePlay(currentSong)}>▶</button>
-            <button onClick={handlePause}>⏸</button>
-            <button onClick={handleStop}>⏹</button>
+          {/* CENTER - CONTROLS */}
+          <div className="player-center">
+            {isPlaying ? (
+              <button onClick={pauseSong}>⏸</button>
+            ) : (
+              <button onClick={() => playSong(currentSong)}>▶</button>
+            )}
+
+            <button onClick={stopSong}>⏹</button>
           </div>
 
-        </motion.div>
+          {/* RIGHT - EMPTY FOR BALANCE */}
+          <div className="player-right"></div>
+        </div>
       )}
     </div>
   );
 };
 
-export default SongList;
+export default React.memo(SongList);

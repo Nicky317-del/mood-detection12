@@ -1,24 +1,22 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import SongList from "../components/SongList";
 
 const Favorites = () => {
-  const fav = JSON.parse(localStorage.getItem("fav")) || [];
+  const [favorites, setFavorites] = useState([]);
+
+  useEffect(() => {
+    const stored = localStorage.getItem("favorites");
+    setFavorites(stored ? JSON.parse(stored) : []);
+  }, []);
 
   return (
-    <div>
-      <h2>❤️ Favorites</h2>
+    <div style={{ padding: "20px" }}>
+      <h2>❤️ Favorite Songs</h2>
 
-      {fav.length === 0 ? (
-        <p>No favorites yet</p>
+      {favorites.length === 0 ? (
+        <p>No favorites yet 😕</p>
       ) : (
-        <div className="grid">
-          {fav.map((song, i) => (
-            <div key={i} className="card">
-              <img src={song.artworkUrl100} />
-              <h4>{song.trackName}</h4>
-              <p>{song.artistName}</p>
-            </div>
-          ))}
-        </div>
+        <SongList songs={favorites} />
       )}
     </div>
   );
